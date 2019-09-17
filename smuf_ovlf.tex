@@ -153,8 +153,7 @@ Science \sep Publication \sep Complicated
 \end{frontmatter}
 
 %% Start line numbering here if you want
-%%
-% \linenumbers
+\linenumbers
 
 %===========================================
 \section{Introduction}
@@ -169,18 +168,17 @@ To maximise the utilisation of DER, \citet{pouttu2017p2p} propose a smart electr
 This framework is currently used to enable decentralised business transactions across several industries, such as investment, labour, goods and transport.
 Companies such as eBay and Airbnb connect thousands of buyers and a sellers, allowing experimentation with prices and different selling mechanisms \citep{p2p_mkts}.
 
-\citet{pouttu2017p2p} suggest the P2P philosophy is well suited and even preferred when a large number of DER are connected to the grid, enabling them to embrace more strategic opportunities towards active roles in the power market. 
+\citet{pouttu2017p2p} suggest the P2P philosophy is well suited and even preferred when a large number of DER are connected to the grid, enabling them to embrace more strategic opportunities towards active roles in the power market.
 
 Additionally, DER can act as groups, and trade services within organised energy market auctions, such as frequency response, peak-shaving or spare capacity usage \citep{energycollectives2017preprint}.
 These services, based on aggregating load and/or generation from several DER, are overseen by a new legal actor in the energy market: the Aggregator.
 To be able to effectively trade at the power system market, the Aggregator will need support from a bespoke platform.
 This platform must be able to look at high frequency individual demand data and monitor, predict, schedule and assess risk regarding energy trading in real time \citep{mocanu2016demand}.
 
+
+
 This paper analyses the relationship between expected aggregated demand and density forecast errors.
 We relate them, respectively, to 'return' and 'risk' from the classical portfolio theory, as illustrated in Figure \ref{fig:random_frontier}.
-Based on portfolio optimisation of density forecasts, the paper compares various customers selection methods.
-The goal is to propose a method that choses a portfolio with minimal forecast errors for a given energy demand.
-The methods we propose can help Aggregators match demand in an uncertainty scenario with surplus in local generation.
 
 \begin{figure}
   \centering
@@ -189,26 +187,24 @@ The methods we propose can help Aggregators match demand in an uncertainty scena
   \label{fig:random_frontier}
 \end{figure}
 
-% * <jyjeon@gmail.com> 2018-01-23T23:40:28.716Z:
-% > In order to build this process, history data coupled with recent development on probabilistic forecast and computer power, is used to define a time series based forecasting function, that relies on demand volume and load variation.
-% > One advantage of using time series data is the simplicity and flexibility for implementing the same model in other regions or using other type of customers.
-% > It also does not depend on weather or socio-economical data availability, as it uses past trend and behaviour for extrapolating the future energy requirement \citep{forecasting_general_review}.
-% > Having said that, wherever there is additional datasets available, regression based models could be used to enhance accuracy.
-% > This have been proved to enhance the prediction accuracy in noisy financial time series forecasting \citep{TAY2001309}.
-% Most of what you wrote in this paragraph is useless and not interesting.
-% EFSA: You suggested most of it a long time ago. I don't mind removing it at all.
-%
+Forecast errors (risk) are defined through a time-series based forecast function that couples historical demand volume and load variation data with recent development on probabilistic forecast and computer power.
+One advantage of using time series data is the simplicity and flexibility for implementing the same model in other regions or using other type of customers.
+It also does not depend on weather or socio-economical data availability, as it uses past trend and behaviour for extrapolating the future energy requirement \citep{forecasting_general_review}.
+Having said that, wherever there is additional datasets available, regression based models could be used to enhance accuracy.
+This have been proved to enhance the prediction accuracy in noisy financial time series forecasting \citep{TAY2001309}.
+Expected aggregated demand (return) is defined by past data.
+
+Based on portfolio optimisation of density forecasts, the paper compares various customers selection methods.
+The goal is to propose a method that choses a portfolio with minimal forecast errors for a given energy demand.
+The methods we propose can help Aggregators match demand in an uncertainty scenario with surplus in local generation.
+
 \hl{The rest of the paper is organised as follows: ...}
 
-
-% [2do] [efsa] english correction http://nomadesdigitais.com/cambridge-lanca-ferramenta-online-e-gratuita-que-corrige-seus-textos-em-ingles-na-hora/
-
 %===========================================
-\section{The smart meter data}
+\section{The Korean smart meter data}
 \label{sec:smdata}
 %===========================================
 
-We used smart meter data from two different countries: Korea and Ireland.
 The Korean data consists of hourly demand of 1,000 residential customers, recorded between January 2012 and October 2014 by Korea Electric Power Corporation (KEPCO). None of the data sources contains specific location data. The Irish data, collected for the Smart Metering Electricity Customer Behaviour Trials \citep{irish_data}, was recorded in half-hourly time series of domestic energy demand for over 1,000 anonymised Irish homes, but was converted to hourly time series for this study to be consistent with the resolution of the Korean data to be used in the same model. As our study does not require the whole period, we used October 2010 for the Irish and October 2012 for the Korean data. In October, both countries have around 11.5 sunshine hours per day and an expected average temperature between 11$^{\circ}$C. and 13$^{\circ}$C. [WHAT'S THE RATIONALE IN MENTIONING THIS? DOES THE SIMILARITY IN TEMPERATURE GIVES ANY LOGICAL SUPPORT FOR SOMETHING?]
 
 
