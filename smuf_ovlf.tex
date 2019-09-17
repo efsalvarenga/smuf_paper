@@ -1,6 +1,6 @@
 %===========================================
 % Smart Metering Uncertainty Forecasting
-% 
+%
 % Author  Estevao "Steve" Alvarenga
 %         efsa@bath.edu
 % Created in 10/Jun/17
@@ -138,7 +138,7 @@
 \begin{abstract}
 We propose to produce probabilistic forecasts for a group of households rather than individual households to minimise forecast uncertainty in Peer to Peer (P2P) trading, which aims to utilise surplus in renewable energy generation locally.
 % To produce the probabilistic forecasts, we used two probabilistic forecast models: Kernel density estimation (KDE) and ARMA-GARCH. (better define ARMA-GARCH and KDE on forecasting methods)
-Our study compares the characteristics of the Irish and Korean smart meter data we used, and finds that probabilistic forecast accuracy enhances with a larger aggregation of customers, and converges to the maximum in average for groups larger than 50 customers, which is recommended as the number of minimum customers in a P2P transaction when the aggregation is constructed in a random manner. Aiming to produce a better probabilistic forecast accuracy conditional on an expected supply, the research further explores three approaches to defining an aggregation of customers, and finds that the approach simply using standard deviation only in the in-sample period produces probabilistic forecasts comparable to or better than more sophisticated approaches. Our empirical analysis uses hourly data from Korea and Ireland to evaluate the density forecasts of group demand up to 24h ahead. 
+Our study compares the characteristics of the Irish and Korean smart meter data we used, and finds that probabilistic forecast accuracy enhances with a larger aggregation of customers, and converges to the maximum in average for groups larger than 50 customers, which is recommended as the number of minimum customers in a P2P transaction when the aggregation is constructed in a random manner. Aiming to produce a better probabilistic forecast accuracy conditional on an expected supply, the research further explores three approaches to defining an aggregation of customers, and finds that the approach simply using standard deviation only in the in-sample period produces probabilistic forecasts comparable to or better than more sophisticated approaches. Our empirical analysis uses hourly data from Korea and Ireland to evaluate the density forecasts of group demand up to 24h ahead.
 % Check Irish data/result is included. Any further findings?
 \end{abstract}
 
@@ -161,79 +161,32 @@ Science \sep Publication \sep Complicated
 \label{sec:intro}
 %===========================================
 As the world drives towards increased renewable energy adoption, a greater proportion of generation is coming from local sources.
-% * <jyjeon@gmail.com> 2018-01-23T22:49:22.257Z: diverse organisational and ownership models
-% EFSA: Done
-%
-% * <jyjeon@gmail.com> 2018-01-23T22:48:25.557Z: 'community approach'
-% EFSA: Done
-% 
-% * <jyjeon@gmail.com> 2018-01-23T22:47:57.073Z: technology installation. What do you mean by this? Do you have to use this?
-% EFSA: No. Done.
-% 
-% * <jyjeon@gmail.com> 2018-01-23T14:59:31.081Z: In the UK
-% Given that it's international journal, "Many countries.... supports... For example, the UK...." would be better.
-% EFSA: Removed sentence.
-% 
 These distributed energy resources (DER) are mainly based on technologies such as medium to small solar arrays, locally generated waste, and wind sources, and have increased alongside other modern energy solutions like batteries, small-scale hydro, tides and electric vehicles (EV). The DER could feed local distribution networks and sell excess capacity into the grid \citep {HAIN20051199}.
-Nevertheless, most of them are not actively utilised by the distribution network or electricity retailers due to the negative impact on network stability and the lack of incentives from an active local energy marketplace. This has simplified their participation in the market to load reduction assets at lower penetration level.
-% * <jyjeon@gmail.com> 2018-01-23T22:50:47.441Z: In the near future, this proportion will only increase, with the support from other modern energy solutions like batteries, small-scale hydro, tides and electric vehicles (EV). 
-% EFSA: What is the problem with alongside? I preferred it better, unless there is a problem with using this word on this sentence.
-%
-
-% * <jyjeon@gmail.com> 2018-01-23T22:55:44.735Z:
-% The reason is the lack of incentives from an active local energy marketplace, simplifying DER participation in the market to load reduction assets at lower penetration level.
-%
+Nevertheless, most of them are not actively utilised by the distribution network or electricity retailers due to the negative impact on network stability and the lack of incentives from an active local energy marketplace.
+This has simplified their participation in the market as load reduction assets, with low penetration level.
 
 To maximise the utilisation of DER, \citet{pouttu2017p2p} propose a smart electricity business model based on peer-to-peer (P2P) trading.
 This framework is currently used to enable decentralised business transactions across several industries, such as investment, labour, goods and transport.
-% * <jyjeon@gmail.com> 2018-01-23T23:00:10.433Z:
-% > This framework is currently used to enable decentralised business transactions across several industries, such as investment, labour, goods and transport.
-% I don't see any benefit of having this sentence. What you wrote sounds like Pouttu suggested this for every usage.
-% EFSA: I used this paragraph to explain what a P2P market is, as you suggested the readers might not know it beforehand. If you have a better suggestion on how to introduce this subject I am open to changing it.
-% 
 Companies such as eBay and Airbnb connect thousands of buyers and a sellers, allowing experimentation with prices and different selling mechanisms \citep{p2p_mkts}.
-% * <jyjeon@gmail.com> 2018-01-23T22:58:32.233Z:
-% > Companies such as eBay and Airbnb connect thousands of buyers and a sellers, allowing experimentation with prices and different selling mechanisms \citep{p2p_mkts}.
-% Again, is this your conclusion of the paragraph? Why do you mention this in the logical flow of the paper?
-% EFSA: I hope with my comment above will make sense.
-% 
 
-\citet{pouttu2017p2p} suggest P2P philosophy is well suited and even preferred when a large number of DER are connected to the grid, enabling them to embrace more strategic opportunities towards active roles in the power market. 
-% * <jyjeon@gmail.com> 2018-01-23T23:05:07.651Z: 
-% > \citet{pouttu2017p2p} suggest P2P philosophy is well suited and even preferred when a large number of DER are connected to the grid, enabling them to embrace more strategic opportunities towards active roles in the power market. 
-% > Additionally, DER can act as groups, and trade services within organised energy market auctions, such as frequency response, peak-shaving or spare capacity usage \citep{energycollectives2017preprint}.
-% > These services, based on aggregating load and/or generation from several DER, are overseen by a new legal actor on the energy market: the Aggregator.
-% 
-% What's the point of this paragraph? How does this connect to the research?  I don't see any logical flow between sentences either.
-% EFSA: This paragraph links the P2P energy market subject to DER connected to the grid. I believe it makes a lot of sense, as this is the reason we are using P2P isn't it? Again, if you have a better suggestion on how to make this link I am open to change it accordingly.
-% 
+\citet{pouttu2017p2p} suggest the P2P philosophy is well suited and even preferred when a large number of DER are connected to the grid, enabling them to embrace more strategic opportunities towards active roles in the power market. 
 
 Additionally, DER can act as groups, and trade services within organised energy market auctions, such as frequency response, peak-shaving or spare capacity usage \citep{energycollectives2017preprint}.
-These services, based on aggregating load and/or generation from several DER, will be overseen by an actor known as the Aggregator.
+These services, based on aggregating load and/or generation from several DER, are overseen by a new legal actor in the energy market: the Aggregator.
 To be able to effectively trade at the power system market, the Aggregator will need support from a bespoke platform.
-% * <jyjeon@gmail.com> 2018-01-23T23:14:47.810Z:
-% > In the past, when conventional large power plants were responsible for most electricity supply, electricity utilities forecast the overall energy demand and scheduled generation optimising capacity \citep{Ramanathan1997shortforecast}.
-% I don't see this statement is correct. Why conventional large power plants need to be mentioned here? The whole paragraph does not have any flowing logic to any conclusion.
-% EFSA: Agreed. Removed.
-% 
 This platform must be able to look at high frequency individual demand data and monitor, predict, schedule and assess risk regarding energy trading in real time \citep{mocanu2016demand}.
 
 This paper analyses the relationship between expected aggregated demand and density forecast errors.
 We relate them, respectively, to 'return' and 'risk' from the classical portfolio theory, as illustrated in Figure \ref{fig:random_frontier}.
 Based on portfolio optimisation of density forecasts, the paper compares various customers selection methods.
-The goal is to choose a portfolio with minimal forecast errors for a given energy demand.
-The methods we propose will help Aggregators match demand in an uncertainty scenario with surplus in local generation.
-% * <jyjeon@gmail.com> 2018-01-23T23:43:39.070Z: 
-% > community
-% Why community all of sudden?
-% EFSA: Agreed. Removed.
-%
+The goal is to propose a method that choses a portfolio with minimal forecast errors for a given energy demand.
+The methods we propose can help Aggregators match demand in an uncertainty scenario with surplus in local generation.
 
 \begin{figure}
   \centering
   \includegraphics[width=0.8\columnwidth]{2018-01-03_randomgrouping_frontier}
   \caption{The expected demand for a forecast-based portfolio of customers and its risk measured as the forecast error. Various random aggregations are shown in light grey, while the preferred values that minimises risk are in the frontier built by dark points.}
-  \label{fig:random_frontier} 
+  \label{fig:random_frontier}
 \end{figure}
 
 % * <jyjeon@gmail.com> 2018-01-23T23:40:28.716Z:
@@ -244,7 +197,7 @@ The methods we propose will help Aggregators match demand in an uncertainty scen
 % > This have been proved to enhance the prediction accuracy in noisy financial time series forecasting \citep{TAY2001309}.
 % Most of what you wrote in this paragraph is useless and not interesting.
 % EFSA: You suggested most of it a long time ago. I don't mind removing it at all.
-% 
+%
 \hl{The rest of the paper is organised as follows: ...}
 
 
@@ -346,7 +299,7 @@ In addition to work on the X-11 method and its variants, there have also been se
 STL (seasonal-trend decomposition based on Loess) addresses the main drawbacks from X-11, without letting go of its innovations.
 X-11 has a complex option selection procedure, is difficult to diagnose, and is not prepared to deal with missing data.
 The more recent STL method does not suffer from these, while delivering a robust seasonal and trend-cycle decomposition that is not distorted by transient, aberrant behaviour in the data \citep{cleveland1990stl}.
-On the other hand, STL is limited to addictive decomposition, unless some form of data-transformation is implemented to obtain multiplicative decompositions. 
+On the other hand, STL is limited to addictive decomposition, unless some form of data-transformation is implemented to obtain multiplicative decompositions.
 
 STL is a filtering procedure for decomposing the original data $Y_t$ into trend-cycle $T_t$, seasonal $S_t$ and residual $R_t$ (\ref{eq:stl1}), using a local regression technique known as Loess.
 
@@ -381,7 +334,7 @@ Finally, on Section \ref{sss:eval} we introduce the continuous ranked probabilit
 \label{sss:kde}
 %-------------------------------------------
 
-Kernel density estimation (KDE) is a non-parametric method. 
+Kernel density estimation (KDE) is a non-parametric method.
 This means it can maintain the original properties, avoiding any previous assumptions of distributions, constructing the density function based on historic observations.
 Similar to the unconditional KDE implementation done by \citet{Arora201647}, \citet{Jeon2016991} and \citet{Taylor2015370}, the method enables the non-parametric estimation of a probability density \(f\) based on observations \(\{Y_{1},Y_{2},...,Y_{n}\}\).
 The unconditional KDE can be defined through Equation \ref{eq:kde}:
@@ -395,7 +348,7 @@ where $y$ is the energy demand forecast to be estimated, $W$ is the size of the 
 
 The bandwidth is responsible for the density smoothness and was chosen according to Silverman’s reference bandwidth, also known as Silverman’s rule of thumb \citep{silverman1986density}.
 This method defines the bandwidth through Equation \ref{eq:kde.bw}:
-     
+
 \begin{equation}
    h = \begin{cases}
       0.9 \hat \sigma n^{-\frac{1}{5}}\ , & \text{if $\hat \sigma<\frac{sIQR}{1.34}$}\ , \\
@@ -427,7 +380,7 @@ The ARMA($r,m$)-GARCH($p,q$) model follows Equations \ref{eqsub:arma} to \ref{eq
 [YOU USED s for seasonality]
 \begin{subequations}
    \begin{align}
-      y_t        & = \alpha_0 + \sum_{j=1}^p \alpha_j Y_{t-j} + \sum_{k=1}^q \beta_k \varepsilon_{t-k} 
+      y_t        & = \alpha_0 + \sum_{j=1}^p \alpha_j Y_{t-j} + \sum_{k=1}^q \beta_k \varepsilon_{t-k}
          \label{eqsub:arma} \\
       \sigma^2_t & = \delta_0 + \sum_{l=1}^r \delta_j \sigma^2_{t-l} + \sum_{m=1}^s \gamma_k \varepsilon^2_{t-m}
          \label{eqsub:garch}\\
@@ -448,7 +401,7 @@ We used the R package \texttt{\textbf{rugarch}} to build the ARMA-GARCH model \c
 The ARMA($r,m$) order was defined via the lowest Bayesian Information Criterion (BIC) value for the combination of possible ($p,q$) up to ($5,5$).
 BIC was described by \citet{schwarz1978} as an evaluation criteria for choosing the appropriate dimensionality of a model.
 The main difference between BIC and maximum likelihood or Akaike Information Criteria (AIC) is the application of a higher penalty for high order models.
-We chose to limit ($p,q$) up to ($5,5$) as we deemed this was a good trade-off between forecast accuracy and computing resources. 
+We chose to limit ($p,q$) up to ($5,5$) as we deemed this was a good trade-off between forecast accuracy and computing resources.
 The GARCH($p,q$) order was set to (1,1) as this has been shown to produce accurate practical result for volatility estimation \citep{hansen2001comparison}.
 
 For the distribution selection, \texttt{\textbf{rugarch}} enables the use of normal, student-t, generalised error distribution and their skewed versions.
@@ -468,7 +421,7 @@ The method, described in \citet{GBR2007crps}, assesses probabilistic forecasts o
 The CRPS generalises the absolute error, to which it reduces in case of point forecasts, and assess probabilistic forecasts against deterministic observations.
 The CRPS is reported in the same unit as the observations.
 
-The formal definition of this scoring method is described in Equation \ref{eq:crps}. 
+The formal definition of this scoring method is described in Equation \ref{eq:crps}.
 
 \begin{equation}
    \text{CRPS} = \int_{-\infty}^{\infty} \text{BS}(y) dy
@@ -521,7 +474,7 @@ This model starts to underperform, compared to ARMA-GARCH ($\delta = 0.01$), at 
 \section{Methods for demand aggregation}
 \label{sec:load_aggr}
 %===========================================
-One of the  actors anticipated in the P2P energy marketplace is the P2P Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers. 
+One of the  actors anticipated in the P2P energy marketplace is the P2P Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers.
 
 In order to understand the relationship between demand aggregation and forecast uncertainty, we created several groups containing a random selection of households, within a population of 200 households.
 Figure \ref{fig:4weeksaggr} exemplifies how aggregating the demand of several customer reduces the instability of demand.
@@ -589,7 +542,7 @@ To construct the efficient frontier in this scenario we need to select groups th
 
 Classic portfolio optimisation assumes that asset returns follow a multivariate normal distribution.
 This means that the return on a portfolio of assets can be completely described by the expected return and the variance.
-The portfolios on the efficient frontier can be found by quadratic programming, a widely available and efficient solver. 
+The portfolios on the efficient frontier can be found by quadratic programming, a widely available and efficient solver.
 The solutions are optimal and the selection process can be constrained by practical considerations which can be written as linear constraints \citep{CHANG20001271}.
 
 However, energy demand for different portfolio of customers' demand does not behave like assets for a few reasons:
@@ -603,7 +556,7 @@ The constrained portfolio optimisation is an extension to the standard model tha
 \citet{CHANG20001271} present three algorithms based upon genetic algorithms, tabu search and simulated annealing for finding the constrained efficient frontier.
 The attraction of these algorithms are the effectively independency of the selected objective function, facilitating the assessment of different non-linear functions.
 
-The properties of this portfolio optimisation extension, coupled with a solution that is valid for a given forecast lead time, would satisfy the unique characteristics of a portfolio of customers' demand, enabling the implementation of a forecast-based portfolio optimisation platform for P2P energy markets. 
+The properties of this portfolio optimisation extension, coupled with a solution that is valid for a given forecast lead time, would satisfy the unique characteristics of a portfolio of customers' demand, enabling the implementation of a forecast-based portfolio optimisation platform for P2P energy markets.
 
 %-------------------------------------------
 \subsection{Forecast-based Portfolio Optimisation}
@@ -891,7 +844,7 @@ On our experiments, with our subset of data and a 2016 8-core i7 processor, FV o
 \label{ss:rlx}
 %-------------------------------------------
 In order to assess if a relaxation of the binary constraint would produce different results, we chose to implement a SR function allowing fractions of each household to be selected for grouping (figure \ref{fig:optKO_04h-rlx}).
-It can be seen as there is not much advantage in allowing this selective grouping, with both relaxed and unrelaxed versions of SR performing similarly. 
+It can be seen as there is not much advantage in allowing this selective grouping, with both relaxed and unrelaxed versions of SR performing similarly.
 
 \begin{figure}
   \centering
