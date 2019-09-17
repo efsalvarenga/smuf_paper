@@ -82,3 +82,5 @@ Ico*
 
 *.Rhistory
 *.RData
+smuf_ovlf.fdb_latexmk
+smuf_ovlf.fls
