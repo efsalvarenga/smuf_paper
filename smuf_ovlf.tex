@@ -205,16 +205,15 @@ The methods we propose can help Aggregators match demand in an uncertainty scena
 \label{sec:smdata}
 %===========================================
 
-The Korean data consists of hourly demand of 1,000 residential customers, recorded between January 2012 and October 2014 by Korea Electric Power Corporation (KEPCO). None of the data sources contains specific location data. The Irish data, collected for the Smart Metering Electricity Customer Behaviour Trials \citep{irish_data}, was recorded in half-hourly time series of domestic energy demand for over 1,000 anonymised Irish homes, but was converted to hourly time series for this study to be consistent with the resolution of the Korean data to be used in the same model. As our study does not require the whole period, we used October 2010 for the Irish and October 2012 for the Korean data. In October, both countries have around 11.5 sunshine hours per day and an expected average temperature between 11$^{\circ}$C. and 13$^{\circ}$C. [WHAT'S THE RATIONALE IN MENTIONING THIS? DOES THE SIMILARITY IN TEMPERATURE GIVES ANY LOGICAL SUPPORT FOR SOMETHING?]
+The Korean data consists of hourly demand of 1,000 residential customers, recorded between January 2012 and October 2014 by Korea Electric Power Corporation (KEPCO).
+None of the data sources contains specific location data.
+To avoid some periods of missing observations, we did not use the first 12 weeks of data, which contained too many empty data points.
+For missing observations in the in-sample data, the value of the same hour of the same day of the previous week was used instead, to maintain the daily and weekly seasonal patterns.
+We did not evaluate the performance of our models in the missing period in the out-of-sample.
 
+Figure \ref{fig:4weeks} illustrates different patterns of demand time series in the same four week period for four different customers in February 2012.
+Cycles of 24h and 168h (one week) are present in the data.
 
-[WHAT IS THE MISSING PERCENTAGE FOR EACH COUNTRY?] To avoid some periods of missing observations, we did not use the first 12 weeks of data[WHICH COUNTRY AND WHICH PERIOD? ARE YOU TALKING ABOUT OCTOBER DATA OR THE WHOLE PERIOD AVAILABLE?], which contained lots of empty data.
-For missing observations in the in-sample data, the value of the same hour of the same day of the previous week was used instead, to maintain the daily and weekly seasonal patterns. We did not evaluate the performance of our models in the missing period in the out-of-sample.
-
-[DESCRIBE COMMON FEATURES OF THE TWO TIME SERIES]
-
-Figure \ref{fig:4weeks} illustrates different patterns of demand time series in the same four week period for four different customers in February 2012 [WHICH COUNTRY DATA?]. [YOU SAID YOU USED OCTOBER DATA IN MODELLING, WHY DON'T YOU USE OCTOBER DATA?]
-It  is clearly visible that the lengths of daily and weekly seasonal cycles are, respectively, \(24\) and \(168\).
 \begin{figure}
   \centering
   \includegraphics[width=0.8\columnwidth]{2017-10-13_compare_demands_bw2}
@@ -222,23 +221,7 @@ It  is clearly visible that the lengths of daily and weekly seasonal cycles are,
   \label{fig:4weeks}
 \end{figure}
 
-[COULD YOU MAKE THE LENGTH OF EACH TIME SERIES TO BE 168 AND DRAW MULTIPLE LINES WITH DIFFERENT COLOURS, SO THAT WE CAN SEE THE DAILY AND WEEKLY PATTERNS CLEARLY? LET'S HAVE DIFFERENT COLOURS FOR NOW AND THEN CONSIDER MAKING IT GRAY LATER.]
-
-
-\hl{Should I describe the Irish data here or on discussion, when I compare KO and IR.}
-[YOU CAN DESCRIBE THE DISTINCTIVE FEATURE OF EACH IN THE FOLLOWING SECTIONS.]
-
-%-------------------------------------------
-\subsection{Irish data}
-\label{ss:ir}
-%-------------------------------------------
-We used data recorded for Smart Metering Electricity Customer Behaviour Trials (CBTs) \citep{irish_data}.
-This initiative took place during 2009 and 2010 and we looked at domestic energy demand for over 1,000 anonymised Irish homes.
-We had no access to specific location data.
-
-Data was recorded half-hourly and, for comparison with the Korean data, to be presented on \ref{ss:ko} we transformed it into hourly energy demand.
-
-Datasets containing 12 weeks were used for model fitting and forecast generation for up to the next 72 hour.
+Datasets containing 12 weeks were used for model fitting and forecast generation for up to the next 72 hours.
 We had access to a a very big high frequency dataset.
 Instead of using a rolling forecast approach, for each possible hour of available data, we summarised the data as follows:
 For the initial analysis on models and parameters, before any forecast results for the paper were collected, we used forecasting starting points 37 hours apart of each other.
@@ -246,17 +229,6 @@ This allowed for the forecasts to start in different hours inside weeks.
 For data collected for results and discussion, we used sections of the dataset 113 hours apart of each other.
 This method would enable us to use data from several years for the initial analysis without disrupting the blindness of the datasets for forecasting.
 Also, it allowed us to research a big space of the original dataset, and not have a high bias toward certain week days or times of day, while restricting computational time to a feasible cost.
-\hl{not sure if I should keep this paragraph}
-
-%-------------------------------------------
-\subsection{Korean data}
-\label{ss:ko}
-%-------------------------------------------
-
-%-------------------------------------------
-\subsection{Comparison between Korean and Irish data}
-\label{ss:data_compare}
-%-------------------------------------------
 
 %===========================================
 \section{Density forecasting for energy demand}
