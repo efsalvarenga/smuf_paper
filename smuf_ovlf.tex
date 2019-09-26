@@ -199,6 +199,7 @@ The goal is to propose a method that choses a portfolio with minimal forecast er
 The methods we propose can help Aggregators match demand in an uncertainty scenario with surplus in local generation.
 
 \hl{The rest of the paper is organised as follows: ...}
+% MAKE THE LINK BETWEEN SECTIONS, ESPECIALLY WITH DEMAND AGGREGATION
 
 %===========================================
 \section{The Korean smart meter data}
@@ -386,7 +387,7 @@ Figure \ref{fig:dens.cus} exemplifies density plots for the same 24 hours for di
 \subsubsection{Evaluation criteria}
 \label{sss:eval}
 %-------------------------------------------
-With the forecasts in hands, we accordingly added back the deterministic seasonality removed previously, as described in Section \ref{ss:dtransf}.
+With the forecasts in hand, we accordingly added back the deterministic seasonality removed previously, as described in Section \ref{ss:dtransf}.
 The trend-cycle component was extrapolated with the last value recorded in the in-sample data and added to the forecasts.
 We then used the continuous ranked probability score (CRPS) for the evaluation of uncertainty forecasts.
 
@@ -417,7 +418,6 @@ While calibration refers to the statistical consistency between the predictive d
 \subsubsection{Fit convergence for ARMA-GARCH models}
 \label{sss:gof.min}
 %-------------------------------------------
-\hl{include figure with arma garch not fitting from presentation}
 Since the optimisation needed for Section \ref{ss:portopt} depends on a calibrated forecast function, this section describes how the fit convergence for ARMA-GARCH models were defined.
 This parameter is responsible for switching from an ARMA-GARCH-based forecast that is likely to perform bad to a KDE-based forecast, without peeking into the out-sample dataset.
 
@@ -425,7 +425,7 @@ For every fitted ARMA-GARCH model we performed an adjusted Pearson chi-squared g
 The produced goodness-of-fit $\delta$ was compared against a global threshold previously defined.
 
 To define the best global threshold $\delta$ to be used for the forecast model, we implemented five different configurations.
-One based on KDE without any ARMA-GARCH coding, so we can compare results against a benchmark, and four ARMA-GARCH based models, as respectively defined in Sections \ref{sss:kde} and \ref{sss:arma-garch}.
+One based on KDE without any ARMA-GARCH coding, so we can compare results against a benchmark, and four ARMA-GARCH based models, as respectively defined in Sections \ref{sss:arma-garch} and \ref{sss:kde}.
 The difference between each ARMA-GARCH models was the global threshold varying from $\delta = 0$ to $\delta = 0.2$.
 
 We ran a simulation containing 300 customers at 250 different sections from the data, from September 2012 to October 2013.
@@ -434,7 +434,7 @@ Figure \ref{fig:benchmark} compares the forecast accuracy for different $\delta$
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{2017-10-13_big-gofmin_266_graylinesman.pdf}
+  \includegraphics[scale=0.5]{2017-10-13_big-gofmin_266_graylinesman.pdf}
   \caption{Goodness-of-fit selection}
   \label{fig:benchmark}
 \end{figure}
@@ -444,18 +444,17 @@ This model starts to underperform, compared to ARMA-GARCH ($\delta = 0.01$), at 
 
 
 %===========================================
-\section{Methods for demand aggregation}
+\section{Demand aggregation}
 \label{sec:load_aggr}
 %===========================================
-One of the  actors anticipated in the P2P energy marketplace is the P2P Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers.
+As mentioned in the introduction, one of the actors anticipated in the P2P energy marketplace is the Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers.
 
 In order to understand the relationship between demand aggregation and forecast uncertainty, we created several groups containing a random selection of households, within a population of 200 households.
-Figure \ref{fig:4weeksaggr} exemplifies how aggregating the demand of several customer reduces the instability of demand.
-\hl{mention the period from xx/xx to xx/xx, on x-axis put dates}
+Figure \ref{fig:4weeksaggr} exemplifies how aggregating the demand of several customer reduces the demand volatility (four week period in February 2012)
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{2017-10-13_compare_aggrdemands}
+  \includegraphics[scale=0.5]{2017-10-13_compare_aggrdemands}
   \caption{Example of demand time-series for one customer (top-left), and aggregated demand time-series for ten (top-right), one hundred (bottom-left) and two hundred (bottom-right) customers during a period of four weeks}
   \label{fig:4weeksaggr}
 \end{figure}
@@ -465,26 +464,19 @@ In order to maintain proportional comparability, the aggregated demand value of 
 
 Figure \ref{fig:rndgrp} represents the forecast accuracy versus the forecast lead time.
 As expected, forecast error increases (CRPS value) as the lead time increases.
-A strong converging pattern can be seen
+A strong converging pattern can be seen:
 The inaccuracy has a major decrease from individual households to groups of 10, while decreases marginally when comparing groups of 100 and 200 households.
-This suggests that only increasing the number of individuals per group would not be a optimal solution for reducing forecast uncertainty.
+This suggests that only increasing the number of individuals per group would not be an optimal solution for reducing forecast uncertainty.
 Nevertheless, a larger aggregation is always expected to generate forecasts with lower errors.
 
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{2017-10-13_rndgrp}
+  \includegraphics[scale=0.5]{2017-10-13_rndgrp}
   \caption{Forecast uncertainty for different sizes of random groups of households for Korean data}
   \label{fig:rndgrp}
 \end{figure}
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{2017-12-27_rndgrp_IR}
-  \caption{Forecast uncertainty for different sizes of random groups of households for Irish data}
-  \label{fig:rndgrpIR}
-\end{figure}
-
-This groups created following a random fashion were used every time a portfolio optimisation model was run.
+The groups created following a random fashion were used every time a portfolio optimisation model was run.
 The goal is to visualise where the proposed efficient frontier would seat, comparing to the basic random aggregation.
 
 To select customers, we will consider an efficient frontier on the risk-return relationship, based on the constrained portfolio optimisation algorithm defined in Section \ref{ss:sdevgrp}. We illustrate this in Figure \ref{fig:portoptex}, which relates the average of density forecast errors on the x-axis (risk) to the expected aggregated demand on the y-axis (return). \hl{the selection is random, and then averaged, just to show the pattern}
