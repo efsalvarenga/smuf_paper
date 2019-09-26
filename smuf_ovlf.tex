@@ -217,12 +217,12 @@ Cycles of 24h and 168h (one week) are present in the data.
 \begin{figure}
   \centering
   \includegraphics[width=0.8\columnwidth]{2017-10-13_compare_demands_bw2}
-  \caption{Example of electricity demand pattern for four different customers during a period of four weeks[WHICH MONTH/YEAR AND WHICH COUNTRY DATA?]}
+  \caption{Example of electricity demand pattern for four different customers during a period of four weeks}
   \label{fig:4weeks}
 \end{figure}
 
 Datasets containing 12 weeks were used for model fitting and forecast generation for up to the next 72 hours.
-We had access to a a very big high frequency dataset.
+We had access to a a large high frequency dataset.
 Instead of using a rolling forecast approach, for each possible hour of available data, we summarised the data as follows:
 For the initial analysis on models and parameters, before any forecast results for the paper were collected, we used forecasting starting points 37 hours apart of each other.
 This allowed for the forecasts to start in different hours inside weeks.
@@ -234,24 +234,30 @@ Also, it allowed us to research a big space of the original dataset, and not hav
 \section{Density forecasting for energy demand}
 \label{sec:load_fcst}
 %===========================================
-Generally, medium- and long-term forecasts must take into account the historical load and weather data, the number of customers in different categories, the appliances in the area and their characteristics including age, the economic and demographic data and their forecasts, the appliance sales data, and other factors \citep{feinberg2005load}.
-This longer forecasts are used to predict loads as distant as twenty years ahead, so that expansion planning can be facilitated.
-Large generation and infrastructure projects depend on this kind of forecasting for supporting decision \citep{soliman1997application}.
+Generally, medium- and long-term forecasts must take into account:
+\begin{enumerate}
+  \item historical load and weather data;
+  \item number of customers and their characteristics including demographics
+  \item economics data, such as employment, industrial output, etc.
+\end{enumerate}
+
+These longer term forecasts are used to predict loads as distant as twenty years ahead, so that expansion planning can be facilitated \citep{feinberg2005load}.
+Large generation and infrastructure projects depend on this type of forecasting for supporting decision making \citep{soliman1997application}.
 
 Short-term electric load forecasting, on the other hand, is vital for power generation and operation.
 It is fundamental in many applications such as providing optimal economic generation, system security, and management and planning \citep{Hamadi200447}.
 It can also be used to capture value via intra-day or intra-week power arbitrage (moving energy from low value periods to high value periods).
 
 Short to medium-term forecasting models have to take account the relationship between demand and weather.
-However, for lead times of 1-day-ahead there is little difference between performance compared to not using forecasted weather data.
-Non-weather models accuracy worsen as lead time increases, being dominated by more complex models \citep{TAYLOR200357}.
+However, for lead times up to 1-day-ahead, there is little difference in performance if weather forecast data is added to models.
+Non-weather models accuracy worsen as lead time increases, where more complex models dominates accuracy \citep{TAYLOR200357}.
 
 When the interest is in lead times up to about six hours ahead, a univariate model is deemed to be sufficient.
 Whenever the availability of weather forecasts is patchy, univariate models are used for lead times larger than six hours ahead \citep{TAYLOR20061}.
 In the short run, the load is mainly influenced by meteorological real time conditions, seasonal effects (daily and weekly cycles, calendar holidays) and special events.
 
-While the decision making process in the utility industry rely on expected values, or point forecasting, the increase in market competition and renewable integration requires a probabilistic approach for planning and operation of energy systems \citep{HONG2016914}.
-Literature provides a wide range of electricity demand forecasting methods, with probabilistic approaches being favoured due to non-linear and non-stationary demand profiles \citet{mocanu2016demand}.
+While the decision making process in the utility industry rely on expected values, or point forecast, the increase in market competition and renewable integration requires a probabilistic approach for planning and operation of energy systems \citep{HONG2016914}.
+Literature provides a wide range of electricity demand forecasting methods, with probabilistic approaches being favoured due to non-linear and non-stationary demand profiles \citep{mocanu2016demand}.
 The research interest in probabilistic energy forecasting has taken off rapidly in recent years \citep{Hong2016896} and, at the same time, a massive smart meter deployment providing the industry a huge amount of high resolution data \citep{HONG2016914}.
 
 %-------------------------------------------
@@ -293,9 +299,50 @@ In this paper we implement an univariate autoregressive conditional heteroskedas
 For each customer, in each time-step, we define an ARMA-GARCH model to produce forecasts, as described on Section \ref{sss:arma-garch}.
 Whenever this model does not converge to an acceptable fit, we implement the KDE model, described on Section \ref{sss:kde}.
 The acceptable fit is defined via the adjusted Pearson chi-squared goodness-of-fit test, proposed by \citet{vlaarpalm_gof}.
-Section \ref{sss:gof.min} details the implementation and results for the dataset used on this paper.
 
-Finally, on Section \ref{sss:eval} we introduce the continuous ranked probability score (CRPS), the evaluation criteria of choice for the produced density forecasts.
+On Section \ref{sss:eval} we introduce the continuous ranked probability score (CRPS), the evaluation criteria of choice for the produced density forecasts. Finally, on Section \ref{sss:gof.min} details the implementation and results for the dataset used on this paper.
+
+%-------------------------------------------
+\subsubsection{Univariate ARMA-GARCH}
+\label{sss:arma-garch}
+%-------------------------------------------
+
+According to \citet{Jeon2016991}, ARMA-GARCH models are used widely for capturing autocorrelation in the conditional mean and variance.
+GARCH models were used to predict day-ahead electricity prices in Spain and California, outperforming general time series ARIMA models, specially when high volatility is present \citep{garcia2005garch}.
+The ARMA($r,m$) describes the conditional mean process, while the GARCH($p,q$) describes the conditional variance process.
+The GARCH($p,q$) process is similar to an ARMA process implemented for the variance magnitude.
+The ARMA($r,m$)-GARCH($p,q$) model follows Equations \ref{eqsub:arma} to \ref{eqsub:error}.
+\begin{subequations}
+   \begin{align}
+      y_t        & = \alpha_0 + \sum_{j=1}^p \alpha_j Y_{t-j} + \sum_{k=1}^q \beta_k \varepsilon_{t-k}
+         \label{eqsub:arma} \\
+      \sigma^2_t & = \delta_0 + \sum_{l=1}^r \delta_j \sigma^2_{t-l} + \sum_{m=1}^s \gamma_k \varepsilon^2_{t-m}
+         \label{eqsub:garch}\\
+      \varepsilon_t & = \sigma_t \eta_t
+         \label{eqsub:error}
+   \end{align}
+   \label{eq:arma_garch}
+\end{subequations}
+
+where $y_t$ is the energy demand observed at time $t$;
+$\epsilon_t$ is a iid error term;
+$\sigma_t$ is the conditional standard deviation (volatility);
+$\alpha_i$, $\beta_i$, $\delta_i$ and $\gamma_i$ are the coefficients of the AR, MA, GARCH and ARCH components with orders defined by non-negative integers $p$, $q$, $r$ and $m$, respectively;
+and $\eta_t$ is the white noise generating process.
+In principle the $\varepsilon_t$ could follow any suitable distribution model.
+
+We used the R package \texttt{\textbf{rugarch}} to build the ARMA-GARCH model \citep{Ghalanos_2014}.
+The ARMA($r,m$) order was defined via the lowest Bayesian Information Criterion (BIC) value for the combination of possible ($p,q$) up to ($5,5$).
+BIC was described by \citet{schwarz1978} as an evaluation criteria for choosing the appropriate dimensionality of a model.
+The main difference between BIC and maximum likelihood or Akaike Information Criteria (AIC) is the application of a higher penalty for high order models.
+We chose to limit ($p,q$) up to ($5,5$) as we deemed this was a good trade-off between forecast accuracy and computing resources.
+The GARCH($p,q$) order was set to (1,1) as this has been shown to produce accurate practical result for volatility estimation \citep{hansen2001comparison}.
+
+For the distribution selection, \texttt{\textbf{rugarch}} enables the use of \textit{normal}, \textit{student-t}, \textit{generalised error distribution} and their skewed versions.
+Given that \citet{theodossiou2015skewed} investigated empirical distributions such as the ones available in \texttt{\textbf{rugarch}} for finance data - with the presence of skewness, kurtosis, conditional heteroskedasticity, asymmetric volatility, and other non-linear dependencies.
+These characteristics were responsible for biased models being trained when applying normal distributions.
+The \textit{skewed version of the generalised error distribution} was proven to provide better fit to the empirical data distribution and, based on this - and to accommodate a highly volatile dataset - we chose it for the ARMA-GARCH model.
+
 
 %-------------------------------------------
 \subsubsection{Kernel density estimation}
@@ -304,7 +351,7 @@ Finally, on Section \ref{sss:eval} we introduce the continuous ranked probabilit
 
 Kernel density estimation (KDE) is a non-parametric method.
 This means it can maintain the original properties, avoiding any previous assumptions of distributions, constructing the density function based on historic observations.
-Similar to the unconditional KDE implementation done by \citet{Arora201647}, \citet{Jeon2016991} and \citet{Taylor2015370}, the method enables the non-parametric estimation of a probability density \(f\) based on observations \(\{Y_{1},Y_{2},...,Y_{n}\}\).
+Similar to the unconditional KDE implementation done by \citet{Arora201647}, \citet{Jeon2016991} and \citet{Taylor2015370}, the method used on this work enables the non-parametric estimation of a probability density \(f\) based on observations \(\{Y_{1},Y_{2},...,Y_{n}\}\).
 The unconditional KDE can be defined through Equation \ref{eq:kde}:
 
 \begin{equation}
@@ -330,52 +377,10 @@ where $\hat \sigma$ is the standard deviation of the sliding window $w$ and $sIQ
 Figure \ref{fig:dens.cus} exemplifies density plots for the same 24 hours for different customers using Korean data.
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\columnwidth]{2017-10-13_compare_fulldensities_KO2}
+  \includegraphics[scale=0.5]{2017-10-13_compare_fulldensities_KO2}
   \caption{Example of electricity demand densities forecasted for four different individual customers, built using KDE with a window size of 24h, without prior seasonal analysis}
   \label{fig:dens.cus}
 \end{figure}
-
-%-------------------------------------------
-\subsubsection{Univariate ARMA-GARCH}
-\label{sss:arma-garch}
-%-------------------------------------------
-
-According to \citet{Jeon2016991}, ARMA-GARCH models are used widely for capturing autocorrelation in the conditional mean and variance.
-GARCH models were used to predict day-ahead electricity prices in Spain and California, outperforming general time series ARIMA models, specially when high volatility is present \citep{garcia2005garch}.
-The ARMA($r,m$) describes the conditional mean process, while the GARCH($p,q$) describes the conditional variance process.
-The GARCH($p,q$) process is similar to an ARMA process implemented for the variance magnitude.
-The ARMA($r,m$)-GARCH($p,q$) model follows Equations \ref{eqsub:arma} to \ref{eqsub:error}.
-[YOU USED s for seasonality]
-\begin{subequations}
-   \begin{align}
-      y_t        & = \alpha_0 + \sum_{j=1}^p \alpha_j Y_{t-j} + \sum_{k=1}^q \beta_k \varepsilon_{t-k}
-         \label{eqsub:arma} \\
-      \sigma^2_t & = \delta_0 + \sum_{l=1}^r \delta_j \sigma^2_{t-l} + \sum_{m=1}^s \gamma_k \varepsilon^2_{t-m}
-         \label{eqsub:garch}\\
-      \varepsilon_t & = \sigma_t \eta_t
-         \label{eqsub:error}
-   \end{align}
-   \label{eq:arma_garch}
-\end{subequations}
-
-where $y_t$ is the energy demand observed at time $t$;
-$\epsilon_t$ is a iid error term;
-$\sigma_t$ is the conditional standard deviation (volatility);
-$\alpha_i$, $\beta_i$, $\delta_i$ and $\gamma_i$ are the coefficients of the AR, MA, GARCH and ARCH components with orders defined by non-negative integers $p$, $q$, $r$ and $s$, respectively;
-and $\eta_t$ is the white noise generating process.
-In principle the $\varepsilon_t$ could follow any suitable distribution model.
-
-We used the R package \texttt{\textbf{rugarch}} to build the ARMA-GARCH model \citep{Ghalanos_2014}.
-The ARMA($r,m$) order was defined via the lowest Bayesian Information Criterion (BIC) value for the combination of possible ($p,q$) up to ($5,5$).
-BIC was described by \citet{schwarz1978} as an evaluation criteria for choosing the appropriate dimensionality of a model.
-The main difference between BIC and maximum likelihood or Akaike Information Criteria (AIC) is the application of a higher penalty for high order models.
-We chose to limit ($p,q$) up to ($5,5$) as we deemed this was a good trade-off between forecast accuracy and computing resources.
-The GARCH($p,q$) order was set to (1,1) as this has been shown to produce accurate practical result for volatility estimation \citep{hansen2001comparison}.
-
-For the distribution selection, \texttt{\textbf{rugarch}} enables the use of normal, student-t, generalised error distribution and their skewed versions.
-\citet{theodossiou2015skewed} investigated empirical distributions for finance data with the presence of skewness, kurtosis, conditional heteroskedasticity, asymmetric volatility, and other non-linear dependencies.
-This properties created biased models when applying normal distributions.
-A skewed version of the generalised error distribution was proven to provide better fit to the empirical distribution of the data. Based on this, and to accommodate a highly volatile dataset, we chose this distribution for the ARMA-GARCH model.
 
 %-------------------------------------------
 \subsubsection{Evaluation criteria}
