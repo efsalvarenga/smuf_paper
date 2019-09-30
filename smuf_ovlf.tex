@@ -30,7 +30,7 @@
 %% $Id: elsarticle-template-1-num.tex 149 2009-10-08 05:01:15Z rishi $
 %% $URL: http://lenova.river-valley.com/svn/elsbst/trunk/elsarticle-template-1-num.tex $
 %%
-\documentclass[review, 3p, 12pt, authoryear]{elsarticle}
+\documentclass[preprint,3p,11pt,authoryear]{elsarticle}
 
 %% Use the option review to obtain double line spacing
 %% \documentclass[preprint,review,12pt]{elsarticle}
@@ -174,8 +174,6 @@ Additionally, DER can act as groups, and trade services within organised energy 
 These services, based on aggregating load and/or generation from several DER, are overseen by a new legal actor in the energy market: the Aggregator.
 To be able to effectively trade at the power system market, the Aggregator will need support from a bespoke platform.
 This platform must be able to look at high frequency individual demand data and monitor, predict, schedule and assess risk regarding energy trading in real time \citep{mocanu2016demand}.
-
-
 
 This paper analyses the relationship between expected aggregated demand and density forecast errors.
 We relate them, respectively, to 'return' and 'risk' from the classical portfolio theory, as illustrated in Figure \ref{fig:random_frontier}.
@@ -476,24 +474,17 @@ Nevertheless, a larger aggregation is always expected to generate forecasts with
   \label{fig:rndgrp}
 \end{figure}
 
-The groups created following a random fashion were used every time a portfolio optimisation model was run.
-The goal is to visualise where the proposed efficient frontier would seat, comparing to the basic random aggregation.
+Another way to visualise the same phenomenon is, instead of averaging the CRPS per group size, averaging it over the forecast lead time for randomly generated groups.
+We then move the CRPS metric to the x-axis, while adding the mean demand (sum of power demand for each group) as the y-axis.
+We now relate again to Figure \ref{fig:random_frontier} in the beginning of the article, where the light grey points represent various random generated groups while the best in a range of aggregated demand are coloured in dark grey.
+Finding this set of best aggregation for each of the demand ranges can be done through evaluating all possible groups and then performing search algorithms.
+However this is a time consuming process given the non-linear nature of the aggregation process and exponential scale of grouping options.
 
-To select customers, we will consider an efficient frontier on the risk-return relationship, based on the constrained portfolio optimisation algorithm defined in Section \ref{ss:sdevgrp}. We illustrate this in Figure \ref{fig:portoptex}, which relates the average of density forecast errors on the x-axis (risk) to the expected aggregated demand on the y-axis (return). \hl{the selection is random, and then averaged, just to show the pattern}
+In our method, to select customers to pertain a group, we estimate their expected forecast error and choose an aggregation that would minimise that, given a demand range.
+This set of groups form an efficiency frontier for the risk-return relationship, based on the constrained portfolio optimisation algorithm defined in Section \ref{ss:sdevgrp}.
+Minimising the expected forecast error can be performed in many different ways, including forecast based methods.
 
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{2017-11-15_randomgrouping}
-  \caption{Example of risk-return frontier for forecast-based energy demand portfolios}
-  \label{fig:portoptex}
-\end{figure}
-\hl{maybe this figure should be on the first pages of the paper?}
-Retrieving the expected future aggregated demand for a group of customers is a forecast based task.
-
-On the other hand, minimising the expected forecast error can be performed in many different ways, including forecast based methods.
 The Aggregator would use the frontier rendered by different methods to operate in the energy market minimising the risk of under- or over- bidding energy consumption, while trying to match supply offers from distributed energy generation.
-
-\l{review this:} The following pages describe this process. Starting from the seasonality analysis (Section \ref{ss:dtransf}), the forecasting model and evaluation criteria (Section \ref{ss:fcst}), and finally, the portfolio optimisation model (Section \ref{ss:portopt}).
 
 %-------------------------------------------
 \subsection{Constrained portfolio optimisation}
