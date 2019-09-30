@@ -501,10 +501,10 @@ This means that the return on a portfolio of assets can be completely described 
 The portfolios on the efficient frontier can be found by quadratic programming, a widely available and efficient solver.
 The solutions are optimal and the selection process can be constrained by practical considerations which can be written as linear constraints \citep{CHANG20001271}.
 
-However, energy demand for different portfolio of customers' demand does not behave like assets for a few reasons:
+However, energy demand for different portfolio of customers does not behave like assets for a few reasons:
 \begin{enumerate}
    \item The perishable nature of electricity demand;
-   \item Restrictions, as customers either participate to a group or not and;
+   \item Affiliation restrictions, as customers either participate to a group or not and;
    \item Nonlinear relationship between customer selection and forecast error.
 \end{enumerate}
 
@@ -524,13 +524,13 @@ The constrain is defined as a binary variable where each customer is included or
 
 We chose three different objective functions on our work, further detailed in this Section:
 \begin{enumerate}
-   \item Forecast Validated (FV): minimising forecast error using the forecasting function on a validation dataset.
-   \item Seasonal Residual (SR): minimising standard deviation of the residual of a deseasonalised aggregated demand and;
+   \item Forecast Validated (FV): minimising forecast error using the forecasting function on an (unseen) validation dataset.
+   \item Seasonal Residual (SR): minimising the standard deviation of the residual of a deseasonalised aggregated demand and;
    \item Seasonal Similarity (SS): minimising the deviation of the seasonal signals of customers pertaining a portfolio;
 \end{enumerate}
 All three implemented objective functions require a nonlinear function $f_i$.
 This function is applied to a matrix $\bm{A}$ containing the demand history (columns) per customer (rows) and a customer selection vector $v$.
-Considering restrictions, $v$ was defined as a binary vector with as many positions as the number of households (equation \ref{eq:nonlfx}).
+Considering the affiliation restrictions, $v$ was defined as a binary vector with as many positions as the number of households (equation \ref{eq:nonlfx}).
 \begin{equation}
    \underset{v_j \in \mathbb N[0,1]}{min}\big(f_i(A,v)\big)
    \label{eq:nonlfx}
@@ -540,7 +540,7 @@ We used the pure genetic algorithm option with R function \texttt{\textbf{genoud
 \texttt{\textbf{genoud}} uses a generation based optimisation, modifying a population of trial solutions so each generation is expected to be better than its predecessor, measured against the function to be optimised.
 This algorithm also allows for integer constraints to be implemented on the variable space, outside the objective functions, which dramatically reduces computational time.
 
-Using derivatives is not mandatory, but in some cases might speed up the convergence on local optima.
+Using derivatives is not mandatory, but in some cases can speed up the convergence on local optima.
 However, optimisation methods that rely on derivatives of the objective function may be unable to find optimum values when dealing with nonlinear functions and integer variables due to non-concavity and discontinuities \citep{genoud}.
 
 Sections \ref{sss:FV} to \ref{sss:SS} describe the three proposed objective functions.
@@ -568,7 +568,7 @@ This allowed the forecast evaluation of several positions in the in-sample datas
 This number of divisions rendered a good trade-off between optimisation result, over-fitting, and computational time.
 
 $F_{fv}$ was applied to each training matrix $\bm{A}_{n,a}$ and evaluated against the test matrix $\bm{A}_{n,b}$, using the same selection vector $v$.
-The average of these evaluations was returned as the FV function result, and as described in Section \ref{sss:FV}, $v$ was chosen in order to minimise this result.
+The average of these evaluations was returned as the FV function result, and as described in Section \ref{ss:portopt}, $v$ was chosen in order to minimise this result.
 An alternative approach, that selected only the last day instead of the last week of the in-sample period, was implemented as well, rendering less accurate forecasts through the chosen selection vector $v$ (see Table \ref{tb_fvperselec}).
 
 \begin{table}[]
@@ -589,9 +589,9 @@ An alternative approach, that selected only the last day instead of the last wee
 %-------------------------------------------
 The SR method aggregates the time-series data of a defined group of customers, followed by the seasonality analysis.
 The seasonality analysis returns the remainder signal of the seasonal decomposition from the aggregated demand history.
-Finally it calculates the standard deviation of this single time-series data containing to the remainder of the decomposition.
+Finally it calculates the standard deviation of this single time-series data.
 
-On other words, applies the following $F_{sr}$ function onto the undivided matrix $\bm{A}$ and the selection vector $v$, as shown in equation \ref{eq:sr}.
+In other words, the method applies the following $F_{sr}$ function onto the undivided matrix $\bm{A}$ and the selection vector $v$, as shown in equation \ref{eq:sr}.
 
 \begin{equation}
    F_{sr}(\bm{A},v) = \widehat{RSD}(R^{\bm{A} \times v}_t)
@@ -602,7 +602,7 @@ Where:
 
 $\widehat{RSD}$ is given by the sample standard deviation $s$ divided by the mean $\bar{x}$;
 
-$R^{\bm{A} \times v}_t$ is defined as the remainder of the seasonal decomposition (described on Section \ref{ss:dtransf}) onto the time-series generated after multiplying matrix $\bm{A}$ with the selection vector $v$, as in equation \ref{eq:stlsr}.
+$R^{\bm{A} \times v}_t$ is defined as the remainder of the seasonal decomposition (described on Section \ref{ss:dtransf}) from the time-series generated after multiplying matrix $\bm{A}$ with the selection vector $v$, as in equation \ref{eq:stlsr}.
 
 \begin{equation}
    STL (\bm{A} \times v)_t = T^{\bm{A} \times v}_t + S^{\bm{A} \times v}_t + R^{\bm{A} \times v}_t
@@ -635,7 +635,11 @@ The bi-objective approach estimates the relative standard deviation ($\widehat{R
 
 Where $\widehat{RSD}$ is given by the sample standard deviation $s$ divided by the mean $\bar{x}$.
 
-The first part of Equation \ref{eq:ss} calculates the similarity between the seasonal components of selected customers. Lower $\widehat{RSD}(\bm{S^B_t})$ per column means minimal difference between seasonal signals per time-step. The second part of Equation \ref{eq:ss} calculates the similarity between the remainder components of selected customers. Since it is expected that $\bm{R^B_t}$ has no trend, a second consequence is that lower $\widehat{RSD}(\bm{R^B_t})$ means customers with lower variability after removing the seasonal signal. Different ratio $r$ can be used to change the weights between the objective functions.
+The first part of Equation \ref{eq:ss} calculates the similarity between the seasonal components of selected customers.
+Lower $\widehat{RSD}(\bm{S^B_t})$ per column means minimal difference between seasonal signals per time-step.
+The second part of Equation \ref{eq:ss} calculates the similarity between the remainder components of selected customers.
+Since it is expected that $\bm{R^B_t}$ to be around zero, a second consequence is that lower $\widehat{RSD}(\bm{R^B_t})$ means a group of customers with lower variability at the same time, after removing the seasonal signal.
+Different ratios $r$ can be used to change the weights between the objective functions.
 
 The goal of the optimiser is the minimisation of Equation \ref{eq:ss}, through changing $v$ for a given $r$.
 
@@ -666,7 +670,7 @@ The non-normalisation of seasonal component while considering the entire in-samp
 \end{table}
 
 Having selected the first two options, the different weights were assessed and Table \ref{tb_ssmix_r} summarises the findings.
-For the same dataset, giving a weight  $r = 0.1$ to the seasonal component, while ignoring the remainder similarity on the bi-objective function, returned the best accuracy.
+For the same dataset, giving a weight  $r = 1.0$ to the seasonal component (which means ignoring the remainder similarity on the bi-objective function), returned the best accuracy.
 
 \begin{table}[]
 	\centering
