@@ -690,7 +690,17 @@ For the same dataset, giving a weight  $r = 1.0$ to the seasonal component (whic
 \label{ss:genoud}
 %-------------------------------------------
 
-The genetic algorithm was set to stop after $100$ generations or after $10$ consecutive generations without enhancement in the function value, whatever happened first.
+\citet{CHANG20001271} describes the genetic algorithm (GA) as an “intelligent” probabilistic search algorithm, originally based on biological evolutionary process seen in nature.
+Populations evolve following natural selection, where fitter individuals - and their genes - have greater chances of survival and reproduction.
+Highly fit genes are more likely to be combined into offsprings which could, potentially, be even more fit.
+Theoretically, species evolve as their populations become better adapted.
+
+The GA Computationally replicates the process by starting off with a population of individuals (initial guesses in the solution space), and applying reproduction and mutation operations.
+The fitness of individuals is evaluated with respect to the optimisation objetive function, and better fit individuals are given more reproduction chances by combining with other fit individuals.
+After reproduction is taken care of, the mutation process includes random variability into offspring.
+The process is repeated until a stoping condition is reached.
+
+In this work, the genetic algorithm was set to stop after $100$ generations or after $10$ consecutive generations without enhancement in the objective function, whatever happened first.
 For all methods, we used 12 weeks as the in-sample period (matrix $\bm{A}$, containing 100 customers as rows, and 2016 time-steps as columns).
 Instead of running the optimisation to find one unique optimal group, we divided the expected demand axis into $16$ bins.
 This method was chosen to enable the construction of a stepwise efficiency frontier for each optimisation function.
