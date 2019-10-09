@@ -445,7 +445,7 @@ This model starts to underperform, compared to ARMA-GARCH ($\delta = 0.01$), at 
 \section{Demand aggregation}
 \label{sec:load_aggr}
 %===========================================
-As mentioned in the introduction, one of the actors anticipated in the P2P energy marketplace is the Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers.
+A revised energy market, including a P2P marketplace, could give space to different actors, and one of the anticipated ones is the Aggregator. \citet{pouttu2017p2p} mention that the P2P aggregator will deliver, among other services, forecasts for aggregated load and generation, and then, for a given expected generation, optimally procure aggregation of demand by combining multiple customer loads, closely matching generation. The goal of our experiment is to propose a method for this. In the composition of the group, the size of customers could vary from one to hundreds customers.
 
 In order to understand the relationship between demand aggregation and forecast uncertainty, we created several groups containing a random selection of households, within a population of 200 households.
 Figure \ref{fig:4weeksaggr} exemplifies how aggregating the demand of several customer reduces the demand volatility (four week period in February 2012)
@@ -695,16 +695,17 @@ Populations evolve following natural selection, where fitter individuals - and t
 Highly fit genes are more likely to be combined into offsprings which could, potentially, be even more fit.
 Theoretically, species evolve as their populations become better adapted.
 
-The GA Computationally replicates the process by starting off with a population of individuals (initial guesses in the solution space), and applying reproduction and mutation operations.
-The fitness of individuals is evaluated with respect to the optimisation objetive function, and better fit individuals are given more reproduction chances by combining with other fit individuals.
+The GA computationally replicates the process by starting off with a population of individuals (initial guesses in the solution space), and applying reproduction and mutation operations.
+The fitness of individuals is evaluated with respect to the optimisation objective function, and better fit individuals are given more reproduction chances by combining with other fit individuals.
 After reproduction is taken care of, the mutation process includes random variability into offspring.
 The process is repeated until a stoping condition is reached.
 
 In this work, the genetic algorithm was set to stop after $100$ generations or after $10$ consecutive generations without enhancement in the objective function, whatever happened first.
 For all methods, we used 12 weeks as the in-sample period (matrix $\bm{A}$, containing 100 customers as rows, and 2016 time-steps as columns).
-Instead of running the optimisation to find one unique optimal group, we divided the expected demand axis into $16$ bins.
-This method was chosen to enable the construction of a stepwise efficiency frontier for each optimisation function.
-Practically this means that, for any chosen function, instead of running a single optimisation run on $\bm{A}$ for the full spectrum of expected demand, we run $16$ optimisations with different and non-super-positioned expected demand limits.
+
+Instead of running the optimisation to find one unique optimal group, we evenly divided the expected demand axis into $16$ ranges, defining $16$ optimisation scopes.
+This method was chosen to enable the construction of a stepwise efficiency frontier for each optimisation scope.
+Practically this means that, for any chosen function, instead of running a single optimisation run on $\bm{A}$ for the full spectrum of expected demand, we run $16$ optimisation scopes with different and non-super-positioned expected demand limits.
 The process created groups whose aggregated demand would be between given minimum and maximum values.
 This number of divisions was selected as they enabled the construction of a piecewise frontier while allowing the entire process to be executed in a feasible computational time.
 
@@ -712,24 +713,19 @@ This number of divisions was selected as they enabled the construction of a piec
 \subsection{Results for demand aggregation}
 \label{ss:res_demaggr}
 %-------------------------------------------
-\hl{explain the 100 sims plot}
+\hl{what goes here?}
 
 
 %===========================================
 \section{Discusion}
 \label{sec:discussion}
 %===========================================
-
-%-------------------------------------------
-\subsection{Portfolio optimisation results for Korean data}
-\label{ss:portoptKO}
-%-------------------------------------------
-Figures \ref{fig:optKO_04h} and \ref{fig:optKO_12h} present the portfolio optimisation for two different time-ahead forecasts. This results are the average values from 11 different simulations, each containing 100 customers from the Korean dataset.
+Figures \ref{fig:optKO_04h} and \ref{fig:optKO_12h} present the portfolio optimisation for two different time-ahead forecasts (4 and 12 hours ahead, respectively). This results are the average values from 11 different simulations, each containing 100 customers from the Korean dataset.
 Table \ref{tb_optKO} summarises the results, averaging the accuracy value throughout the energy demand spectrum for all functions.
 All three optimisation functions implemented deliver good result at selecting groups that would reduce the uncertainty for given mean demand ranges.
-As the mean demand increases, a simple random aggregation of customers are able to reduce most of the uncertainty, leaving a limited space for optimisation (upper part of the figures).
-Nevertheless the portfolio optimisation returns the best available groups (or very close to it) most of the time, specially for the SS and FV functions.
-On both forecast lead-times the SS functions perform poorly compared to the alternatives.
+As the mean demand increases, a simple random aggregation of customers is able to reduce most of the uncertainty, leaving limited space for optimisation (upper part of the figures).
+Nevertheless the portfolio optimisation returns the best available groups (or very close to it) most of the time, specially for the SR and FV functions.
+On both forecast lead-times the SS functions (Seasonal Similarity where $r = 1$, and Seasonal & Remainder where $r=0.5$) perform poorly compared to the alternatives.
 Also, one can see that a longer forecast lead-time render a worse accuracy for random groups of customers.
 
 \begin{figure}
