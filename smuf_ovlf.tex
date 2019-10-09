@@ -487,6 +487,11 @@ Minimising the expected forecast error can be performed in many different ways, 
 The Aggregator would use the frontier rendered by different methods to operate in the energy market minimising the risk of under- or over- bidding energy consumption, while trying to match supply offers from distributed energy generation.
 
 %-------------------------------------------
+\section{Forecast-based Portfolio Optimisation}
+\label{sec:portopt}
+%-------------------------------------------
+
+%-------------------------------------------
 \subsection{Constrained portfolio optimisation}
 \label{ss:sdevgrp}
 %-------------------------------------------
@@ -515,7 +520,7 @@ The attraction of these algorithms are the effectively independency of the selec
 The properties of this portfolio optimisation extension, coupled with a solution that is valid for a given forecast lead time, would satisfy the unique characteristics of a portfolio of customers' demand, enabling the implementation of a forecast-based portfolio optimisation platform for P2P energy markets.
 
 %-------------------------------------------
-\subsection{Forecast-based Portfolio Optimisation}
+\subsection{Fit-for-purpose optimisation functions}
 \label{ss:portopt}
 %-------------------------------------------
 
@@ -710,10 +715,10 @@ The process created groups whose aggregated demand would be between given minimu
 This number of divisions was selected as they enabled the construction of a piecewise frontier while allowing the entire process to be executed in a feasible computational time.
 
 %-------------------------------------------
-\subsection{Results for demand aggregation}
-\label{ss:res_demaggr}
+%\subsection{Results for demand aggregation}
+%\label{ss:res_demaggr}
 %-------------------------------------------
-\hl{what goes here?}
+%\hl{what goes here?}
 
 
 %===========================================
@@ -725,8 +730,8 @@ Table \ref{tb_optKO} summarises the results, averaging the accuracy value throug
 All three optimisation functions implemented deliver good result at selecting groups that would reduce the uncertainty for given mean demand ranges.
 As the mean demand increases, a simple random aggregation of customers is able to reduce most of the uncertainty, leaving limited space for optimisation (upper part of the figures).
 Nevertheless the portfolio optimisation returns the best available groups (or very close to it) most of the time, specially for the SR and FV functions.
-On both forecast lead-times the SS functions (Seasonal Similarity where $r = 1$, and Seasonal & Remainder where $r=0.5$) perform poorly compared to the alternatives.
-Also, one can see that a longer forecast lead-time render a worse accuracy for random groups of customers.
+On both forecast lead-times the SS function perform poorly compared to the alternatives.
+Also, one can visually inspect that a longer forecast lead-time render a worse accuracy for random groups of customers, which does not hold for the optimally selected groups.
 
 \begin{figure}
   \centering
@@ -757,38 +762,6 @@ Also, one can see that a longer forecast lead-time render a worse accuracy for r
 \end{table}
 
 %-------------------------------------------
-\subsection{Portfolio optimisation with the Irish data}
-\label{ss:portoptIR}
-%-------------------------------------------
-\hl{Comparison of the two data sets}
-
-In addition, we run the same SR function using the Irish dataset.
-The results are still good to generate groups on the lower half of the aggregated demand, but not overcoming as good as the number of customers needed for grouping increases.
-Specially for very large aggregations, this method produces groups that are worse than the average of a random grouping method.
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{2017-12-27_runf_IR_12h.pdf}
-  \caption{Portfolio optimisation using a 12h-ahead forecast for Irish customers}
-  \label{fig:optIR_12h}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{2017-12-27_runf_IR_04h.pdf}
-  \caption{Portfolio optimisation using a 4h-ahead forecast for Irish customers}
-  \label{fig:optIR_04h}
-\end{figure}
-
-\begin{figure}
-  \centering
-  \includegraphics[width=0.8\columnwidth]{2017-12-27_runf_IR_04h-rlx.pdf}
-  \caption{Portfolio optimisation using a 04h-ahead forecast for Irish customers, relaxing the binary variable}
-  \label{fig:optIR_04h-rlx}
-\end{figure}
-
-
-%-------------------------------------------
 \subsection{Comparison between SR and FV functions}
 \label{ss:SRxFV}
 %-------------------------------------------
@@ -802,7 +775,7 @@ Another drawback of this functions is the presence of overfitting as groups can 
 In someway, the advantages and disadvantages seem to compensate each other, as the FV function performs slightly better for a longer lead-time, and slightly worse for the short lead-time.
 
 Computationally speaking, any signal analysis method (SR or SS) consumes significantly lower time to run as they do not require many forecasting runs while grouping customers.
-The FV function needs thousands of forecast runs while grouping, and this can get very time intensive.
+The FV function needs thousands of forecast runs while grouping, and this can get very resource intensive.
 On our experiments, with our subset of data and a 2016 8-core i7 processor, FV optimisation costs 27h to build an entire frontier for a single simulation, while the SD function runs ins less than 1h.
 
 %-------------------------------------------
@@ -825,6 +798,7 @@ It can be seen as there is not much advantage in allowing this selective groupin
 \section{Conclusion}
 \label{sec:conclusion}
 %===========================================
+\hl{write after JJ comments}
 
 \section*{References}
 
